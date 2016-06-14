@@ -1,0 +1,52 @@
+﻿@model Dominio.Entidades.Carro
+
+@{
+    ViewBag.Title = "HealthCare - Mostrar Compra";
+}
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h3>Mostrar Compra</h3>
+    </div>
+    <div class="panel-body">
+        <p>Este es el ultimo paso antes de pagar, porfavor compruebe que todos los datos son correctos</p>
+        @using (Html.BeginForm("Terminar", "Carro", FormMethod.Post, null))
+        {
+            <table id="tablaCarro" class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-center">Producto</th>
+                        <th class="text-center">Empresa</th>
+                        <th class="text-center">Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (Dominio.Entidades.ProductoComprado prod in Model.ProductosComprados)
+                        {
+                            <tr>
+                                <td class="text-center">@prod.Cantidad</td>
+                                <td class="text-center">@prod.producto.Nombre</td>
+                                <td class="text-center">@prod.empresa.Nombre</td>
+                                <td class="text-center">@prod.producto.Precio.ToString("c")</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th class="text-right" colspan="4">Total : @Model.CosteTotalCarro().ToString("c")</th>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="text-center">
+                <a class="btn btn-info" href="/Productos/Listar">Volver a la Tienda</a>
+                <button class="btn btn-success">Finalizar pedido</button>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+

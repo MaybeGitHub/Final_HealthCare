@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="HealthCare" Class="BaseDatos" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(localdb)\ProjectsV12;Initial Catalog=HealthCare;Integrated Security=True;Connect Timeout=30" SettingsObjectName="Dominio.Properties.Settings" SettingsPropertyName="HealthCareConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Rol_Info" Member="Rol_Infos">
+    <Type Name="Rol_Info">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Tipo" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Permisos" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="Rol_Info_Usuario" Member="Usuarios" ThisKey="Id" OtherKey="Rol" Type="Usuario" Cardinality="One" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Usuario" Member="Usuarios">
+    <Type Name="Usuario">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Apellidos" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Telefono" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Dir" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Login" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="Rol" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="imagenTipo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="imagenContenido" Type="System.Byte[]" DbType="Binary(255)" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="Usuario_Pedido" Member="Pedidos" ThisKey="Id" OtherKey="Usuario" Type="Pedido" Cardinality="One" />
+      <Association Name="Usuario_Producto" Member="Productos" ThisKey="Id" OtherKey="Empresa" Type="Producto" />
+      <Association Name="Usuario_Direccion" Member="Direccions" ThisKey="Dir" OtherKey="Id" Type="Direccion" Cardinality="One" />
+      <Association Name="Rol_Info_Usuario" Member="Rol_Info" ThisKey="Rol" OtherKey="Id" Type="Rol_Info" IsForeignKey="true" />
+      <Association Name="Pedido_Usuario" Member="Pedido" ThisKey="Id" OtherKey="Empresa" Type="Pedido" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Pedido" Member="Pedidos">
+    <Type Name="Pedido">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Usuario" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Empresa" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Producto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Fecha_Insercion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Fecha_Entregado" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Cantidad" Type="System.Int32" CanBeNull="false" />
+      <Association Name="Pedido_Usuario" Member="Usuarios" ThisKey="Empresa" OtherKey="Id" Type="Usuario" Cardinality="One" />
+      <Association Name="Usuario_Pedido" Member="Usuario1" ThisKey="Usuario" OtherKey="Id" Type="Usuario" IsForeignKey="true" />
+      <Association Name="Producto_Pedido" Member="Producto1" ThisKey="Producto" OtherKey="Id" Type="Producto" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Producto" Member="Productos">
+    <Type Name="Producto">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Descripcion" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Categoria" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="Precio" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Empresa" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="imagenTipo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="imagenContenido" Type="System.Byte[]" DbType="Binary(255)" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="Producto_Pedido" Member="Pedidos" ThisKey="Id" OtherKey="Producto" Type="Pedido" Cardinality="One" />
+      <Association Name="Usuario_Producto" Member="Usuario" ThisKey="Empresa" OtherKey="Id" Type="Usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Direccion" Member="Direccions">
+    <Type Name="Direccion">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Calle" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Localidad" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Provincia" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CodigoPostal" Type="System.Int32" DbType="int NOT NULL" CanBeNull="false" />
+      <Association Name="Usuario_Direccion" Member="Usuario" ThisKey="Id" OtherKey="Dir" Type="Usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

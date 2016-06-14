@@ -1,0 +1,14 @@
+﻿﻿BACKUP DATABASE HealthCare 
+TO DISK = 'C:\Users\deadl\Desktop\HealthCare.bak'
+	WITH FORMAT
+GO
+
+RESTORE FILELISTONLY
+FROM DISK = 'C:\Users\deadl\Desktop\HealthCare.bak';
+
+
+RESTORE DATABASE HealthCare 
+   FROM DISK = 'C:\Users\deadl\Desktop\HealthCare.bak'
+   WITH  REPLACE,
+   MOVE 'HealthCare' TO 'C:\Users\deadl\Desktop\HealthCare.mdf',
+MOVE 'HealthCare' TO 'C:\Users\deadl\Desktop\HealthCare.ldf';

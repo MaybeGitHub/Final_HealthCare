@@ -1,0 +1,10 @@
+﻿@model Dominio.Entidades.Carro
+
+<div class="navbar-right">
+    <b>Tu Carro: </b>
+    @Model.ProductosComprados.Sum(p => p.Cantidad) producto(s), 
+    @Model.CosteTotalCarro().ToString("c")
+    @Html.ActionLink("Ver Carro", "Index", "Carro", new { UrlAnterior = Request.Url.PathAndQuery.Contains("Carro") ? "/Productos/Listar" : Request.Url.PathAndQuery }, new { @class = "btn btn-info" })
+
+</div>
+

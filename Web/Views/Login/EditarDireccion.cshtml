@@ -1,0 +1,79 @@
+﻿@model Dominio.Entidades.Direccion
+
+@{
+    ViewBag.Title = "Nueva Direccion";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+<div class="panel-group">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3>Editar Direccion</h3>
+        </div>
+        <div class="panel-body">
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2" style="text-decoration: underline">Calle</label>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Calle, new { htmlAttributes = new { @class = "form-control", @maxlength = "200" } })
+                            @Html.ValidationMessageFor(model => model.Calle, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Localidad, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-decoration: underline" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Localidad, new { htmlAttributes = new { @class = "form-control", @maxlength = "100" } })
+                            @Html.ValidationMessageFor(model => model.Localidad, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Provincia, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-decoration: underline" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Provincia, new { htmlAttributes = new { @class = "form-control", @maxlength = "100" } })
+                            @Html.ValidationMessageFor(model => model.Provincia, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CodigoPostal, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-decoration: underline" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.CodigoPostal, new { htmlAttributes = new { @class = "form-control", @maxlength = "5" } })
+                            @Html.ValidationMessageFor(model => model.CodigoPostal, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Crear Usuario" class="btn btn-success" />
+                        </div>
+                    </div>
+                </div>
+                if (Model.Usuario.Rol == 3)
+                {
+                    <div>
+                        @Html.ActionLink("Volver", "Listar", "Productos", null, new { @class = "btn btn-info" })
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <a href="/Empresas/Pedidos" class="btn btn-info">Volver</a>
+                    </div>
+                }               
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+

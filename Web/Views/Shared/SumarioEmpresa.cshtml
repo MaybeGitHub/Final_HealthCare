@@ -1,0 +1,101 @@
+﻿@model Dominio.Entidades.Usuario
+
+<div id="pop_@Model.Id">
+    <img src="@Url.Action("GetImage", "Admin", new { id = Model.Id })" height="507" width="600" border="0">
+</div>
+
+<div class="well">
+    @if (Model.imagenContenido != null)
+    {
+    <div class="pull-left" style="margin-right: 10px">
+        <img class="img-thumbnail" id="@Model.Id" width="75" height="75" src="@Url.Action("GetImage", "Admin", new { id = Model.Id })" />
+    </div>
+    }
+    else
+    {
+    <div class="pull-left" style="margin-right: 10px">
+        <img class="img-thumbnail" id="@Model.Id" width="75" height="75" src="~/Imagenes/default/sin_foto.png" />
+    </div>
+    }
+ 
+
+    <h3>
+        <strong>@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Model.Nombre)</strong>        
+    </h3>
+
+
+    @using (Html.BeginForm("AñadirAlCarro", "Carro"))
+    {
+        <div class="pull-right">
+            @Html.Hidden("Nombre", Model.Nombre)
+            @Html.Hidden("IDEmpresa", Model.Id)
+            @Html.Hidden("UrlAnterior", "/")
+            <input type="submit" class="btn btn-success" value="Añadir al carro" />
+        </div>
+    }
+    <span class="lead text-info">Direccion - @Model.Direccions.Calle</span>
+</div>
+
+
+<style>
+    #pop {
+        z-index: 2;
+        position: absolute;
+        text-align: center;
+        border: 1px solid lightgrey;
+    }
+
+    #cerrar {
+        float: right;
+        margin-right: 5px;
+        cursor: pointer;
+        font: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        font-weight: bold;
+        color: #FFFFFF;
+        background-color: #666666;
+        width: 12px;
+        position: relative;
+        margin-top: -1px;
+        text-align: center;
+    }
+</style>
+
+<script>
+
+    $(document).ready(function () {
+
+        //Recolocamos el div pop
+        $("div[id^='pop']").detach().prependTo("#body");
+
+        //Conseguir valores de la img
+        var img_w = $("div[id^='pop'] img").width() + 10;
+        var img_h = $("div[id^='pop'] img").height() + 28;
+
+        //Darle el alto y ancho
+        $("div[id^='pop']").css('width', img_w + 'px');
+        $("div[id^='pop']").css('height', img_h + 'px');
+
+        //Esconder el popup
+        $("div[id^='pop']").hide();
+
+        //Consigue valores de la ventana del navegador
+        var w = $(this).width();
+        var h = $(this).height();
+
+        //Centra el popup
+        w = (w / 2) - (img_w / 2);
+        h = (h / 2) - (img_h / 2);
+        $("div[id^='pop']").css("left", w + "px");
+        $("div[id^='pop']").css("top", h + "px");
+
+        $(".img-thumbnail").click(function () {
+            $("#pop_" + $(this).prop("id")).slideDown();
+        });
+
+        //Función para cerrar el popup
+        $("div[id^='pop']").click(function () {
+            $(this).slideUp();
+        });
+    });
+</script>

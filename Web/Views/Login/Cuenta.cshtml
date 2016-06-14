@@ -1,0 +1,128 @@
+﻿@model Dominio.Entidades.Usuario
+
+@{
+    ViewBag.Title = "Nuevo Usuario";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<div class="panel-group">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3>Nuevo Usuario</h3>
+        </div>
+        <div class="panel-body">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Rol, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-decoration: underline" })
+                        <div class="col-md-10">
+                            <select id="Rol" name="Rol" class="form-control">
+                                <option value="3">Cliente</option>
+                                <option value="4">Empresa</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2", @style= "text-decoration: underline" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", @maxlength = "50" } })
+                            @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="foto" hidden>
+                        <label class="control-label col-md-2">Foto del local</label>
+                        <div class="col-md-10">
+                            <input name="foto" type="file">
+                        </div>
+                    </div>
+                    <div class="form-group" id="apellidos">
+                        @Html.LabelFor(model => model.Apellidos, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Apellidos, new { htmlAttributes = new { @class = "form-control", @maxlength = "150" } })
+                            @Html.ValidationMessageFor(model => model.Apellidos, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Telefono, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-decoration: underline" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Telefono, new { htmlAttributes = new { @class = "form-control", @maxlength = "9" } })
+                            @Html.ValidationMessageFor(model => model.Telefono, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @maxlength = "150" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Login, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-decoration: underline" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Login, new { htmlAttributes = new { @class = "form-control", @maxlength = "20" } })
+                            @Html.ValidationMessageFor(model => model.Login, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">                        
+                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-decoration: underline" })
+                        <div class="col-md-10 input-group">                            
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @maxlength = "30" } })
+                            <span title="Mostrar Contraseña" id="mostrar" class="input-group-addon btn"><span class="glyphicon glyphicon-eye-open"></span></span>                            
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger", @style="margin-left: 20px" })                            
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Crear Direccion" class="btn btn-success" />
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    @Html.ActionLink("Ir al Login", "Index", null, new { @class = "btn btn-info" })
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>     
+    function Rol() {
+        if ($("#Rol").val() == "4") {
+            $("#apellidos").slideUp(function () {
+                $("#foto").slideDown();
+            });
+        } else {
+            $("#foto").slideUp(function () {
+                $("#apellidos").slideDown();
+            });
+        }
+    }
+      
+    Rol();
+    $("#Rol").on("change", function () {
+        Rol();
+    });
+
+    $("#mostrar").on("mousedown", function () {
+        $("#Password").prop("type", "text");
+    })
+
+    $("#Password").prop("type", "password");
+    $("#mostrar").on("mouseup", function () {
+        $("#Password").prop("type", "password");
+    })
+</script>
+
+
+

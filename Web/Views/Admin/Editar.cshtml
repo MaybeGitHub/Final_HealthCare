@@ -1,0 +1,140 @@
+﻿@model  Dominio.Entidades.Producto
+    
+@{ 
+    ViewBag.Title = "Admin - Editar " + Model.Nombre;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        @if (Model.Id == 0)
+        {
+            <h3>Nuevo Producto</h3>
+        }
+        else
+        {
+            <h3>Editando @Model.Nombre</h3>
+        }
+        <div id="pop">
+            <div id="cerrar">X</div>
+            <img src="@Url.Action("GetImage", "Admin", new { id = Model.Id })" height="507" width="600" border="0">
+        </div>
+    </div>
+    <div class="panel-body">
+        <form action="/Admin/Editar" method="post" class="form-horizontal" enctype="multipart/form-data">
+            <input type="hidden" id="id" name="id" value="@Model.Id" />
+            <div class="form-group row">
+                <label for="nombre" class="col-sm-2 control-label" style="text-decoration: underline">Nombre:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="nombre" name="nombre" value="@Model.Nombre" maxlength="100" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="descripcion" class="col-sm-2 control-label">Descripcion:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="descripcion" name="descripcion" value="@Model.Descripcion" maxlength="150" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="categoria" class="col-sm-2 control-label" style="text-decoration: underline">Categoria:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="categoria" name="categoria" value="@Model.Categoria" maxlength="100" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="precio" class="col-sm-2 control-label" style="text-decoration: underline">Precio:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="precio" name="precio" value="@Model.Precio" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div style="position:relative;">
+                    <label class="col-sm-2 control-label">Imagen</label>
+                    <a class="btn" href="javascript:;">
+                        Elige una foto... <input type="file" id="Imagen" name="Imagen" size="40" style="position: absolute; z-index: 2; top: 0; left: 0; filter: alpha(opacity=0); opacity: 0; background-color: transparent; color: transparent;" onchange='$("#upload-file-info").html($(this).val());'>
+                    </a>
+                    <span class="label label-info" id="upload-file-info"></span>
+                    <div class="col-sm-10 text-center">
+                        @if (Model.imagenContenido != null)
+                        {
+                            <div style="margin-right: 10px">
+                                <img class="img-thumbnail" width="150" height="150" src="@Url.Action("GetImage", "Admin", new { id = Model.Id })" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="margin-right: 10px">
+                                <img class="img-thumbnail" width="150" height="150" src="~/Imagenes/default/sin_foto.png" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <input class="btn btn-success" type="submit" value="Guardar" />
+            @Html.ActionLink("Volver a la Lista", "Index", null, new { @class = "btn btn-info" })
+        </form>
+    </div>
+</div>
+<style>
+    #pop {
+        z-index: 2;
+        position: absolute;
+        text-align: center;
+        border: 1px solid lightgrey;
+    }
+    #cerrar {
+       float:right;
+       margin-right:5px;
+       cursor:pointer;
+       font:Verdana, Arial, Helvetica, sans-serif;
+       font-size:12px;
+       font-weight:bold;
+       color:#FFFFFF;
+       background-color:#666666;
+       width:12px;
+       position:relative;
+       margin-top:-1px;
+       text-align:center;
+    }
+</style>
+
+<script>
+
+    $(document).ready(function () {
+
+        //Conseguir valores de la img
+        var img_w = $("#pop img").width() + 10;
+        var img_h = $("#pop img").height() + 28;
+
+        //Darle el alto y ancho
+        $("#pop").css('width', img_w + 'px');
+        $("#pop").css('height', img_h + 'px');
+
+        //Esconder el popup
+        $("#pop").hide();
+
+        //Consigue valores de la ventana del navegador
+        var w = $(this).width();
+        var h = $(this).height();
+
+        //Centra el popup
+        w = (w/2) - (img_w/2);
+        h = (h/2) - (img_h/2);
+        console.log(w + "." + h);
+        $("#pop").css("left", w + "px");
+        $("#pop").css("top", h + "px");
+
+        $(".img-thumbnail").click(function () {
+            $("#pop").slideDown();
+        });
+
+        //Función para cerrar el popup
+        $("#pop").click(function () {
+            $("#pop").slideUp();
+        });
+
+        $("#precio").on("keyUp", function () {
+            $(this).val().replace(".", ",");
+        })
+    });
+</script>

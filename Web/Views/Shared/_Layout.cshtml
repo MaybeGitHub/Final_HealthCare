@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/Scripts/Stylo.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <link href="~/Content/ErrorStyles.css" rel="stylesheet" />
+    <title>HealthCare</title>
+</head>
+<body>
+    <div class="alert alert-success" style="width: 100%; height: 60px; margin: 0"></div>
+    <a href="/"><div class="jumbotron page-header" style="margin: 0"></div></a>
+    <div class="alert alert-info" style="width:100%; height: 60px">
+        <a class="btn btn-info" href="/Login/Desconectar">Desconectar</a>
+        @Html.Action("Sumario", "Carro")
+        <a class="btn btn-info navbar-right" href="/Login/EditarCuenta" style="margin-right: 20px">Editar Cuenta</a>
+        @if (Request.Url.AbsolutePath.Contains("Pedidos"))
+        {
+            <a class="btn btn-info navbar-right" href="/Productos/Listar" style="margin-right: 20px">Ver Productos</a>
+        }
+        else
+        {
+            <a class="btn btn-info navbar-right" href="/Productos/Pedidos" style="margin-right: 20px">Historial Pedidos</a>
+        }
+        
+    </div>
+
+    <div class="row" id="body">
+        @if (Request.Url.AbsolutePath.Contains("Listar"))
+        {
+            <div id="categorias" class="col-xs-2">
+                @Html.Action("Menu", "Navegador")
+            </div>
+        }
+        else
+        {
+            <div id="categorias" class="col-xs-2"></div>
+        }
+        <div class="col-xs-9">
+            @RenderBody()
+        </div>
+
+            </div>
+    <div id="bottom" class="alert alert-success"></div>
+    
+</body>
+</html>

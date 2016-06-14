@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Admin - Todos los Productos";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h3>Subida de ficheros con productos</h3>
+    </div>
+    <div class="panel-body text-center">
+        <form action="/Admin/Upload" method="post" enctype="multipart/form-data" class="form-inline" role="form">
+            <div class="form-group">
+                <label class="control-label">Ficheros CSV y Texto</label>
+                <input name="files" type="file" multiple accept=".csv, .txt">
+            </div>
+            <br /><br />
+            <div class="form-group">
+                <label class="control-label">Delimitador</label>
+                <input class="form-control" type="text" name="delimitador" value=";" maxlength="1" style="width: 50px; font-weight: bold" />
+            </div>
+            <br /><br />
+            <a href="/Admin/Index" class="btn btn-info" style="margin-right: 10px">Volver</a>
+            <button class="btn btn-success" type="submit" style="margin-left: 10px">Subir</button>            
+        </form>
+        <br />
+        <div>            
+            @if (ViewBag.OK != null || ViewBag.KO != null)
+            {
+                foreach (string ok in ViewBag.OK)
+                {
+                    <div class="alert alert-success"><strong>OK! </strong>@ok</div>
+                }
+
+                foreach (string ko in ViewBag.KO)
+                {
+                    <div class="alert alert-danger"><strong>FAIL! </strong>@ko</div>
+                }                
+            }
+                
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,125 @@
+﻿@model Dominio.Entidades.Usuario
+
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<div class="panel-group">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3>Editar Perfil de @Model.Nombre</h3>
+        </div>
+        <div class="panel-body">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })                   
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-decoration: underline" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", @maxlength = "50" } })
+                            @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    @if (Model.Rol == 3)
+                    {
+                        <div class="form-group" id="apellidos">
+                            @Html.LabelFor(model => model.Apellidos, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Apellidos, new { htmlAttributes = new { @class = "form-control", @maxlength = "150" } })
+                                @Html.ValidationMessageFor(model => model.Apellidos, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    }
+                    else if (Model.Rol == 4)
+                    {
+                        <div class="form-group" id="foto">
+                            <label class="control-label col-md-2">Foto del local</label>
+                            <div class="col-md-10">
+                                <input name="foto" type="file">
+                            </div>
+                        </div>
+                    }
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Telefono, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-decoration: underline" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Telefono, new { htmlAttributes = new { @class = "form-control", @maxlength = "9" } })
+                            @Html.ValidationMessageFor(model => model.Telefono, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @maxlength = "150" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Login, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-decoration: underline" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Login, new { htmlAttributes = new { @class = "form-control", @maxlength = "20" } })
+                            @Html.ValidationMessageFor(model => model.Login, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-decoration: underline" })
+                        <div class="col-md-10 input-group">
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @maxlength = "30" } })
+                            <span title="Mostrar Contraseña" id="mostrar" class="input-group-addon btn"><span class="glyphicon glyphicon-eye-open"></span></span>
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Guardar" class="btn btn-success" />
+                            <a href="/Login/EditarDireccion" style="margin-left: 10px" class="btn btn-info">Modificar Direccion</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                if (Model.Rol == 3)
+                {
+                    <div>
+                        <a href="javascript:history.back()" class="btn btn-info">Volver</a>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <a href="/Empresas/Pedidos" class="btn btn-info">Volver</a>
+                    </div>
+                }
+
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#mostrar").on("mousedown", function () {
+        $("#Password").prop("type", "text");
+    })
+
+    $("#Password").prop("type", "password");
+    $("#mostrar").on("mouseup", function () {
+        $("#Password").prop("type", "password");
+    })
+</script>
+
+
+
+
+

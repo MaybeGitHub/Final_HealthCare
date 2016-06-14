@@ -1,0 +1,189 @@
+﻿@model IEnumerable<Dominio.Entidades.Pedido>
+@{
+    ViewBag.Title = "Pedidos";
+    Layout = "~/Views/Shared/_PedidosLayout.cshtml";
+}
+
+<div class="panel-group">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3>Pedidos</h3>
+        </div>
+        <div class="panel-body">
+            <div class="dropdown">
+                <button id="ordenar" class="btn btn-success dropdown-toggle btn-block" type="button" data-toggle="dropdown">
+                    Ordenar por @ViewBag.Busqueda
+                    <span class="caret"></span>
+                </button>
+                <div id="div_ordenar" class="text-center" hidden style="padding: 10px">
+                    <br />
+                    <form action="/Empresas/Pedidos" method="post" class="form-horizontal">
+                        <div class="form-group row">
+                            <label for="estado" class="col-sm-2 control-label">Estado:</label>
+                            <div class="col-sm-10">
+                                <select id="estado" name="estado" class="form-control">
+                                    <option value="">Todas</option>
+                                    <option value="activas">Activas</option>
+                                    <option value="espera">A la Espera</option>
+                                    <option value="curso">En Curso</option>
+                                    <option value="terminadas">Terminadas</option>
+                                    <option value="rechazadas">Rechazadas</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group row">
+                            <label for="año1" class="col-sm-2 control-label">Año:</label>
+                            <div class="col-sm-10">
+                                <select name="año1" id="año1" class="form-control">
+                                    <option value="">Desde</option>
+                                    @{
+                                        IEnumerable<int> años = Model.Select(p => p.Fecha_Insercion.Year).Distinct();
+                                        foreach (int año in años)
+                                        {
+                                            <option value="@año">@año</option>
+                                        }
+                                    }
+                                </select>
+                                <br />
+                                <select name="año2" id="año2" class="form-control">
+                                    <option value="">Hasta</option>
+                                    @{
+                                        foreach (int año in años)
+                                        {
+                                            <option value="@año">@año</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group row">
+                            <label for="mes1" class="col-sm-2 control-label">Mes:</label>
+                            <div class="col-sm-10">
+                                <select name="mes1" id="mes1" class="form-control">
+                                    <option value="">Desde</option>
+                                    @{
+                                        IEnumerable<int> meses = Model.Select(p => p.Fecha_Insercion.Month).Distinct();
+                                        foreach (int mes in meses)
+                                        {
+                                            <option value="@mes">@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(new DateTime(DateTime.Now.Year, mes, DateTime.Now.Day).ToString("MMMM"))</option>
+                                        }
+                                    }
+                                </select>
+                                <br />
+                                <select name="mes2" id="mes2" class="form-control">
+                                    <option value="">Hasta</option>
+                                    @{
+                                        foreach (int mes in meses)
+                                        {
+                                            <option value="@mes">@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(new DateTime(DateTime.Now.Year, mes, DateTime.Now.Day).ToString("MMMM"))</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-success text-center" style="width: 30%">Buscar</button>
+                    </form>
+                </div>
+            </div>
+            <table id="tabla" class="table text-center table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center">Cliente</th>
+                        <th class="text-center">Producto</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-center">Recibida</th>
+                        <th class="text-center">Finalizada</th>
+                        <th class="text-center">Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.Count() > 0)
+                        {
+                            string color = "default";
+                            string status = "";
+                            foreach (Dominio.Entidades.Pedido pedido in Model)
+                            {
+                                switch (pedido.Estado)
+                                {
+                                    case 0: color = "success"; status = "En espera"; break;
+                                    case 1: color = "warning"; status = "En Curso"; break;
+                                    case 2: color = "danger"; status = "Terminada"; break;
+                                    case 3: color = "danger"; status = "Rechazada"; break;
+                                }
+                                <tr class="@color" id="@pedido.Id">
+                                    <td>@pedido.Usuario1.Nombre</td>
+                                    <td>@pedido.Producto1.Nombre</td>
+                                    <td>@pedido.Cantidad</td>
+                                    <td>@pedido.Fecha_Insercion</td>
+                                    <td>
+                                        @if (pedido.Estado == 2)
+                                        {
+                                            @pedido.Fecha_Entregado
+                                        }
+                                        else
+                                        {
+                                            @status
+                                        }
+                                    </td>
+                                    @if (pedido.Estado == 0)
+                                    {
+                                        <td>
+                                            <button id="ok_@pedido.Id" class="btn btn-xs btn-warning" title="Aceptar Pedido"><span class="glyphicon glyphicon-ok"></span></button>
+                                            <button id="no_@pedido.Id" style="margin-left: 10px" class="btn btn-xs btn-danger" title="Rechazar Pedido"><span class="glyphicon glyphicon-remove"></span></button>
+                                        </td>
+                                    }
+                                    else if (pedido.Estado == 1)
+                                    {
+                                        <td>Esperando al Cliente</td>
+                                    }
+                                    else if (pedido.Estado >= 2)
+                                    {
+                                        <td><button id="borrar_@pedido.Id" class="btn btn-xs btn-danger" title="Borrar Pedido"><span class="glyphicon glyphicon-remove"></span></button></td>
+                                    }
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr class="success">
+                                <td colspan="6" class="text-center">Ningun pedido cumple este patron de busqueda</td>
+                            </tr>
+                        }                        
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $("button[id^='ok']").on("click", function () {
+        var id = $(this).prop("id").split("_")[1];
+        $.post("/Empresas/Accion", { "id": id, accion: 0 }, function () {
+            location.reload();
+        });
+    });
+
+    $("button[id^='no']").on("click", function () {
+        var id = $(this).prop("id").split("_")[1];
+        $.post("/Empresas/Accion", { "id": id, accion: 1 }, function () {
+            location.reload();
+        });
+    });
+
+    $("button[id^='borrar']").on("click", function () {
+        var id = $(this).prop("id").split("_")[1];
+        $.post("/Empresas/Accion", { "id": id, accion: 2 }, function () {
+            location.reload();
+        });
+    });
+
+    $("#ordenar").on("click", function () {
+        $("#tabla").toggle();
+        $("#div_ordenar").slideToggle();
+    })
+</script>

@@ -1,0 +1,45 @@
+﻿@model Web.Models.ListaProductosViewModel
+
+@{
+    ViewBag.Title = "HealthCare - Productos";
+}
+<table class="table" style="width: 50%; float: left">
+    <tbody>
+        @{
+            int cont = 0;
+            foreach (var prod in Model.Productos)
+            {
+                if (cont % 2 == 0)
+                {
+                    <tr>
+                        <td>@Html.Partial("SumarioProducto", prod)</td>
+                    </tr>
+                }
+                cont++;
+            }
+        }
+    </tbody>
+</table>
+<table class="table" style="width: 50%; float: left">
+    <tbody>
+        @{
+            int conteo = 0;
+            foreach (var prod in Model.Productos)
+            {
+                if (conteo % 2 == 1)
+                {
+                    <tr>
+                        <td>@Html.Partial("SumarioProducto", prod)</td>
+                    </tr>
+                }
+                conteo++;
+            }
+        }
+
+
+    </tbody>
+</table>
+
+<div class="btn-group pull-right" style="clear: both">
+    @Html.LinkPaginacion(Model.InfoPagina, x => Url.Action("Listar", new { pagina = x, categoria = Model.CategoriaActual }))
+</div>
