@@ -2,7 +2,7 @@
 
 ## Descripcion
 
-La idea de mi proyecto se basa en poder llevar medicamentos y artículos de farmácia a aquellas personas que, por comodidad o por indisposicion, prefieren que se lo lleven a casa por un poco mas de dinero. También tiene un efecto secundario que es, que, como los fármacos no pueden contratar gente sin cualificación para llevar fármacos, esta página abre puestos de trabajo para aquellos farmaceuticos que quieran empezar en una empresa para ir creciendo dentro.
+La idea de mi proyecto se basa en poder llevar medicamentos y artículos de farmácia a aquellas personas que, por comodidad o por indisposicion, prefieren que se lo lleven a casa por un poco mas de dinero. También tiene un efecto secundario que es, que, como los fármacos no pueden ser manejados por gente sin cualificación, este tipo de páginas crean puestos de trabajo para aquellos farmaceuticos que quieran empezar en una empresa para ir creciendo dentro.
 
 A continuación describo brevemente los distintos componentes de mi programa:
 
