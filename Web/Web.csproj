@@ -114,15 +114,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\textbelt\index.js" />
-    <Content Include="Scripts\textbelt\lib\carriers.js" />
-    <Content Include="Scripts\textbelt\lib\providers.js" />
-    <Content Include="Scripts\textbelt\lib\text.js" />
-    <Content Include="Scripts\textbelt\server\app.js" />
-    <Content Include="Scripts\textbelt\server\authbox_config_example.js" />
-    <Content Include="Scripts\textbelt\server\banned_numbers_example.js" />
-    <Content Include="Scripts\textbelt\server\mixpanel_config_example.js" />
-    <Content Include="Scripts\textbelt\server\views\index.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -186,13 +177,6 @@
     <Content Include="Views\Login\EditarCuenta.cshtml" />
     <Content Include="Views\Login\EditarDireccion.cshtml" />
     <Content Include="Views\Productos\Pedidos.cshtml" />
-    <Content Include="Scripts\textbelt\.gitignore" />
-    <Content Include="Scripts\textbelt\nginx\textbelt" />
-    <Content Include="Scripts\textbelt\package.json" />
-    <Content Include="Scripts\textbelt\Procfile" />
-    <Content Include="Scripts\textbelt\README.md" />
-    <Content Include="Scripts\textbelt\scripts\dev.sh" />
-    <Content Include="Scripts\textbelt\server\keys_example.json" />
     <Content Include="Views\Login\Recuperar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
