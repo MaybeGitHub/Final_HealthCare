@@ -2,7 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -196,5 +199,24 @@ namespace Web.Controllers
                 return View();
             }
         }
+
+        public ActionResult Recuperar()
+        {
+            return View();
+        }
+
+        public JsonResult getUsuario(string login)
+        {
+            Usuario user = baseDatos.Usuarios.FirstOrDefault(u => u.Login == login);        
+            if(user != null)
+            {
+                return Json(new { telefono = user.Telefono, nombre = user.Nombre, apellidos= user.Apellidos, contraseña=user.Password });
+            }
+            else
+            {
+                return null;
+            }
+            
+        }        
     }
 }

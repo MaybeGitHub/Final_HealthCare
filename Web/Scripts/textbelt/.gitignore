@@ -1,0 +1,10 @@
+banned_numbers.js
+mixpanel_config.js
+authbox_config.js
+keys.json
+
+*.swp
+*.swo
+*~
+node_modules/
+nohup.out

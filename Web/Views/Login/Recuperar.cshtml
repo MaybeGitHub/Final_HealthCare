@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "Recuperar Contraseña";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<div class="panel-group" style="width: 50%; margin: 5% auto 0 auto">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3>Recuperar Contraseña</h3>
+        </div>
+        <div class="panel-body">            
+            <div id="log" class="form-group">
+                <p>Primer Paso: Conocernos</p>  
+                <label for="login">Introduce tu Login:</label>
+                <input id="login" class="form-control" placeholder="Login" />
+                <br />
+                <a class="btn btn-info" href="/Login/Index">Volver al Login</a> 
+                <button style="margin-left: 20px;" id="ok" class="btn btn-success">Siguiente Paso</button>
+            </div> 
+            <div id="recu" hidden>
+                <p>Ultimo Paso: Verificacion</p>
+                <div class="form-group">
+                    <label>Nombre:</label>
+                    <input type="text" class="form-control" id="nombre" placeholder="Introduce tu nombre" />
+                </div>
+                <div class="form-group">
+                    <label>Apellidos:</label>
+                    <input type="text" class="form-control" id="apellidos" placeholder="Introduce tus apellidos" />
+                </div>
+                <div class="form-group">
+                    <label>Telefono:</label>
+                    <input type="text" class="form-control" id="telefono" placeholder="Introduce tu telefono" />
+                </div>                
+                <button type="button" id="btn_recu" class="btn btn-success">Obtener Contraseña</button>
+            </div>                     
+            
+            <br /><p hidden id="error" style="font-size: smaller"></p>
+            <a hidden id="fin" class="btn btn-info" href="/Login/Index">Volver al Login</a>                      
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#login").focus();
+    $("#fin").hide();
+    $("#error").hide();
+    if (getCookie("intentos") == 5) {
+        $("#error").show().html("No se pueden hacer mas intentos en media hora desde el bloqueo").removeClass().addClass("text-warning");
+        $("#ok").prop("disabled", true);
+    } else {
+        $("#ok").prop("disabled", false);        
+
+        var usuario;
+
+        $("#ok").on("click", function () {
+            $("#error").hide();
+            var valor_login = $("#login").val();
+                if (valor_login != ""){
+                    if(/[a-zA-Z0-9''-'\s]{1,20}/.test(valor_login)) {
+                        $.post("/Login/getUsuario", { login: valor_login }, function (user) {
+                            if (user != "") {
+                                usuario = user;
+                                $("#log").hide();
+                                $("#recu").show();
+                            } else {
+                                $("#error").show().html("No existe ningun usuario con ese login").removeClass().addClass("text-warning");
+                            }
+                        });
+                    } else {
+                        $("#error").show().html("No se permiten caracteres especiales").removeClass().addClass("text-warning");
+                    }
+            } else {
+                $("#error").show().html("No se puede dejar el Login vacio").removeClass().addClass("text-warning");
+            }
+        });
+
+        $("#btn_recu").on("click", function () {
+            var nombre = $("#nombre").val();
+            var telefono = $("#telefono").val();
+            var apellidos = $("#apellidos").val();
+
+            if (usuario.nombre == nombre && usuario.telefono == telefono && usuario.apellidos == apellidos) {
+                $("#error").show().html("Tu contraseña es: " + usuario.contraseña).removeClass().addClass("text-success");
+                $("#fin").show();
+                delete_cookie("intentos");
+            } else {
+                var intentos = getCookie("intentos");
+                if (intentos == "") {
+                    intentos = 1;
+                } else {
+                    intentos = parseInt(intentos);
+                    intentos += 1;                    
+                }
+                setCookie("intentos", intentos);               
+                if (intentos == 5) {
+                    $("#log").show();
+                    $("#recu").hide();
+                    $("#error").show().html("No se pueden hacer mas intentos en media hora desde el bloqueo").removeClass().addClass("text-warning");
+                    $("#ok").prop("disabled", true);
+                } else {
+                    $("#error").show().html("Los datos no coinciden, quedan " + (5 - intentos) + " intentos").removeClass().addClass("text-warning");
+                }
+            }
+        })
+    }
+
+    function setCookie(cname, cvalue) {
+        var ahora = new Date();
+        ahora.setMinutes(ahora.getMinutes() + 30);
+        var expires = "expires=" + ahora;
+        console.log(expires);
+        document.cookie = cname + "=" + cvalue + ";" + expires;
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function delete_cookie(name) {
+        if (getCookie(name) != "") {
+            document.cookie = name + "=0;expires=Thu, 01 Jan 1970 00:00:01 GMT";
+        }
+    }
+</script>
+
